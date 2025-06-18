@@ -4,14 +4,15 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World! 최민재");
-            Console.WriteLine("Add:" + Add(10, 20));//세미콜론
-           // ValMain();
-            CritcalAttackMain();
-            StageMain();
-           // AttackWile();
-           // MonserListMain();//함수의 호출(사용)
-           // PlayerAttackMain();
+            //Console.WriteLine("Hello, World! 최민재");
+            //Console.WriteLine("Add:" + Add(10, 20));//세미콜론
+            //ValMain();
+            //CritcalAttackMain();
+            //StageMain();
+            //AttackWile();
+            MonserListMain();//함수의 호출(사용)
+                             //PlayerAttackMain();
+                             //AttackCriticalWhile();
         }
 
         static int Add(int a, int b)//매개변수(10,20)
@@ -20,7 +21,7 @@
             return c; //30
         }
 
-       
+
 
         static void ValMain()
         {
@@ -38,9 +39,9 @@
         //값을 설정하지않아서 작동하지않는다. 각 값 공격력을 10, 체력 100으로 설정한다
         static void PlayerAttackMain()
         {
-            int nMonsterAtk =10;
+            int nMonsterAtk = 10;
             int nPlayerHP = 100;
-            Console.WriteLine("몬스터의 공격력: "+nMonsterAtk+"남은 hp:" + nPlayerHP);
+            Console.WriteLine("몬스터의 공격력: " + nMonsterAtk + "남은 hp:" + nPlayerHP);
             nPlayerHP = nPlayerHP - nMonsterAtk;
             Console.WriteLine("몬스터의 공격력: " + nMonsterAtk + "남은 hp:" + nPlayerHP);
         }
@@ -55,10 +56,10 @@
             int nPlayerAtk = 10;
             int nMonsterHP = 100;
             Random cRandom = new Random();
-            int nRandom = cRandom.Next(1,3);//1~2의 값이 나온다. 1/2
+            int nRandom = cRandom.Next(1, 3);//1~2의 값이 나온다. 1/2
             //int nRandom = cRandom.Next(0, 3);//0, 1 ,2의 값이 나온다 1/3
             Console.WriteLine("몬스터의 공격력: " + nPlayerAtk + "남은 hp:" + nMonsterHP);//공격하기전에 데미지를 1.5배 증가시킨다
-            if(nRandom == 1)
+            if (nRandom == 1)
             {
                 Console.WriteLine("CriticalAttack!");
                 nMonsterHP = nMonsterHP - (int)(nPlayerAtk * 1.5f);//몬스터를 때린다.
@@ -66,7 +67,7 @@
             else
                 nMonsterHP = nMonsterHP - nPlayerAtk;//몬스터를 때린다.
             Console.WriteLine("몬스터의 공격력: " + nPlayerAtk + "남은 hp:" + nMonsterHP);
-            Console.WriteLine("Random:"+nRandom);
+            Console.WriteLine("Random:" + nRandom);
         }
         //마을,필드,상점 중에서 이동장소를 입력하면 그 장소의 이름이 나오는 프로그램작성.
         //데이터: 마을,필드,상점 입력값
@@ -77,7 +78,7 @@
             string strTown = "마을";
             string strField = "사낭터";
             string strStore = "상점";
-           
+
             Console.WriteLine("이동 할 장소를 입력하세요.(마을,사냥터,상점)");
             string strInput = Console.ReadLine();
 
@@ -91,13 +92,13 @@
                     break;
                 case "상점":
                     Console.WriteLine("상점 입니다");
-                    break ;
+                    break;
                 default:
                     Console.WriteLine("장소를 잘못입력했습니다");
-                        break;
+                    break;
 
 
-                    
+
             }
             Console.WriteLine("StageMain");
 
@@ -110,18 +111,87 @@
             Console.WriteLine("AttackWile");
             int nMonsterAtk = 10;
             int nPlayerHP = 100;
+            Random qRandom = new Random();
             while (true)
             {
 
+                int bRandom = qRandom.Next(1, 3);
+                if (bRandom == 1)
+
+                {
+                    nMonsterAtk = (int)(nMonsterAtk * 1.5);
+                    nPlayerHP = nPlayerHP - nMonsterAtk;
+                    Console.WriteLine("크리티컬!:" + nMonsterAtk);
+                }
+
 
                 Console.WriteLine("공격전,몬스터의 공격력: " + nMonsterAtk + "남은 hp:" + nPlayerHP);
-                if (nPlayerHP == 0)
-                    Console.WriteLine("플레이어 사망 break");break;
-            }
-            
+                if (nPlayerHP <= 0)//죽었을 때 공격을 중단한다
+                {
 
+
+                    //Console.WhireLine("플레이어 사망 return") retuen;
+                    Console.WriteLine("플레이어 사망 break");
+                    break;
+                }
+                else
+                    nPlayerHP = nPlayerHP - nMonsterAtk;
+                Console.WriteLine("공격후,몬스터의 공격력:" + nMonsterAtk + "남은 hp" + nPlayerHP);
+            }
+
+            //몬스터가 플레이어를 죽을 때 까지 (일정확률로 크리티컬)이 발생하여 추가 데미지만큼 공격한다.
+
+            //몬스터가 플레이어를 공격한다.
+            //몬스터가 플레이어를 죽을 때 가지 공격할 때 공격하기전에 확률을 계산하여 크리티컬데미지를 추가하여 공격하고, 크리티컬이 터지지않으면,데미지가 증가되지 않는다.
+
+            //A.먼저 반복문을 돌리는 경우
+            //1.몬스터가 플레이어를 일단 계속 공격한다 
+            //2.플레이어가 언제 죽었는지를 확인하고 조건문을 설정한다.
+            //B.언제 플레이어가 살아있는지 확인한다.
+            //1.몬스터가 살아 있을때만 공격해야한다.-> while문의 조건을 설정한다
+            //몬스터가 플레이어를 공격할 때 크리티컬이 발생하면 데미지가 1.5배 일시적으로 증가한다.
+        }
+        static void AttackCriticalWhile()
+        {
+            Console.WriteLine("AttackCriticalWile");
+            int nMonsterAtk = 11;
+            int nPlayerHP = 100;
+            Random cRandom = new Random();//랜덤을 생성한다. //랜덤을 계산해주는 물건을 만든다
+                                          //살아있을 때 공격을 한다.//코드가 쉽다->코드가 짧다.//햇갈리지않는다-> 이 조건을 그대로 생각한다.
+            while (nPlayerHP > 0)
+            {
+                Console.WriteLine("공격전. 몬스터의 공격력:" + nMonsterAtk + "남은 hp" + nPlayerHP);
+                //일정확률로 공격하기전에 데미지를 1.5배 증가시킨다.
+                //Random cRandom = new Random(); //랜덤을 하기 전에 생성한다.
+                int nRandom = cRandom.Next(1, 3);// 랜덤값을 생성한다. //랜덤기를 이용해서 숫자를 생선한다
+
+                if (nRandom == 1)
+                {
+
+                    int nCriticalAttack = (int)(nMonsterAtk * 1.5); //크리티컬데미지를 미리저장해서 알기쉽게 계산해둔다.
+                    nPlayerHP = nPlayerHP - nCriticalAttack; //공격을 할 때 1회성으로 계산된 데미지를 사용한다.
+                    Console.WriteLine("크리티컬" + nCriticalAttack);
+                }
+                else
+                    nPlayerHP = nPlayerHP - nMonsterAtk;
+                Console.WriteLine("공격후, 몬스터의 공격력:" + nMonsterAtk + "남은 hp" + nPlayerHP);
+                //랜덤을 끝나면 삭제한다
+
+            }
+        }
+
+        //생성된 랜덤기를 삭제한다.
+
+        //플레이어가 공격하면 몬스터는 반격하고, 둘 중 하나가 죽을 때 까지 전투가 끝나지않고 한 쪽이 죽으면 끝남.
+        //데이터 : 플레이어의 공격력, 플레이어의 체력, 몬스터의 공격력, 몬스터의 체력
+        //알고리즘 : 플레이어가 먼저 공격하고, 몬스터가 맞고나서 반격 한다. 한 쪽이 죽을 때 까지.
+        void PlayerBattleMain()
+        {
 
         }
+
+
+
 
 
         static void MonserListMain()
@@ -145,9 +215,48 @@
 
 
 
-
-
         }
+
+        static void MonsterSelectMain()
+        {
+            Console.WriteLine("이동 할 장소를 입력하세요.(평원, 무덤, 던전, 계곡)");
+            string strInput = Console.ReadLine();
+
+            int nMonsterAttack = 10;
+            int nMonsterHP = 100;
+            string strTown = "마을";
+            string strField = "사낭터";
+            string strStore = "상점";
+
+            Console.WriteLine("이동 할 장소를 입력하세요.(마을,사냥터,상점)");
+            string strInput = Console.ReadLine();
+
+            switch (strInput)
+            {
+                case "평원":
+                    Console.WriteLine("슬라임이 출연합니다");
+                    nMonsterAttack = 5;
+                    nMonsterHP = 20;
+                    break;
+                case "무덤":
+                    Console.WriteLine("스켈레톤이 출연합니다");
+                    nMonsterAttack = 10;
+                    nMonsterHP = 30;
+                    break;
+                case "던전":
+                    Console.WriteLine("드래곤이 출연 합니다");
+                    nMonsterAttack = 20;
+                    nMonsterHP = 50;
+                    break;
+                case "계곡":
+                    Console.WriteLine("드래곤이 출연합니다");
+                    nMonsterAttack = 50;
+                    nMonsterHP = 200;
+                default:
+                    Console.WriteLine("장소를 잘못입력했습니다");
+                    break;
+            }
+        
     }
 }
    
