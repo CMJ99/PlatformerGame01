@@ -3,14 +3,159 @@
 
     internal class RPGPlayer
     {
-        
+        public static void BattleMain(Player player, Player monster)
+        {
+            while (!player.Death() && !monster.Death())
+            {
+                if (player.Death() == false)
+                {
+                    Console.WriteLine("=========Player Trun===========");
+                    player.Attack(monster);
+                    player.Display();
+                    monster.Display();
+                }
+                else
+                    Console.WriteLine("Player Death!");
+
+                if (monster.Death() == false)
+                {
+                    Console.WriteLine("=========Monster Trun===========");
+                    monster.Attack(player);
+                    player.Display();
+                    monster.Display();
+
+                }
+                else
+                    Console.WriteLine("Monster Death!");
+
+                Console.WriteLine("==============================");
+            }
+        }
+        public static void MonsterSelectMain()
+        {
+            Console.WriteLine("이동 할 장소를 입력하세요.(평원,무덤,던전,계곡)");
+
+            string strInput = Console.ReadLine();
+
+            int nMonsterAtk = 10;
+            int nMonsterHP = 100;
+            string strMonster = "none";
+
+
+            switch (strInput)
+            {
+                case "평원":
+                    Console.WriteLine("슬라임이 출연합니다.");
+                    strMonster = "슬라임";
+                    nMonsterAtk = 5;
+                    nMonsterHP = 20;
+                    break;
+                case "무덤":
+                    Console.WriteLine("스켈레톤 출연합니다.");
+                    strMonster = "스켈레톤";
+                    nMonsterAtk = 10;
+                    nMonsterHP = 30;
+                    break;
+                case "던전":
+                    Console.WriteLine("좀비 출연 합니다.");
+                    strMonster = "좀비";
+                    nMonsterAtk = 20;
+                    nMonsterHP = 50;
+                    break;
+                case "계곡":
+                    strMonster = "드래곤";
+                    Console.WriteLine("드래곤이 출연 합니다.");
+                    nMonsterAtk = 50;
+                    nMonsterHP = 200;
+                    break;
+                default:
+                    Console.WriteLine("장소를 잘못입력했습니다.");
+                    break;
+            }
+            Player player = new Player("Player", 20, 10, 10, 1);
+            Player monster = new Player(strMonster, nMonsterAtk, nMonsterHP);
+
+            BattleMain(player, monster);
+        }
+
+        public static void SelectFieldBattleMain()
+        {
+            List<Player> listMoster = new List<Player>();
+
+            listMoster.Add(new Player("slime", 5, 20, 30));
+            listMoster.Add(new Player("skeleton", 10, 30, 30));
+            listMoster.Add(new Player("zombie", 20, 50, 30));
+            listMoster.Add(new Player("dragon", 50, 200, 90));
+            Player player = new Player("Player", 20, 10, 10, 1);
+
+            while (true)
+            {
+                int nSeletIdx = -1;
+                Console.WriteLine("이동 할 장소를 입력하세요.(평원,무덤,던전,계곡)");
+
+                string strInput = Console.ReadLine();
+
+                switch (strInput)
+                {
+                    case "평원":
+                        Console.WriteLine("슬라임이 출연합니다.");
+                        nSeletIdx = 0;
+                        break;
+                    case "무덤":
+                        Console.WriteLine("스켈레톤 출연합니다.");
+                        nSeletIdx = 1;
+                        break;
+                    case "던전":
+                        Console.WriteLine("좀비 출연 합니다.");
+                        nSeletIdx = 2;
+                        break;
+                    case "계곡":
+                        nSeletIdx = 3;
+                        break;
+                    default:
+                        Console.WriteLine("장소를 잘못입력했습니다.");
+                        break;
+                }
+
+
+                Player monster = listMoster[nSeletIdx];
+
+                BattleMain(player, monster);
+
+
+                if (player.Death())
+                {
+                    Console.WriteLine("Game Over!");
+                    break;
+                }
+
+                if (monster.Death())
+                {
+                    Console.WriteLine("몬스터 처치");
+                    player.StillExp(monster); //경험치 흭득
+                    player.LevelUp(player); //레벨업 확인
+
+
+                }
+
+                if (listMoster[3].Death())
+                {
+                    Console.WriteLine("몬스터 처치");
+
+                    Console.WriteLine("The End!");
+
+                }
+            }
+        }
+
+
         public static void ClassPlayerBattleMain()
         {   //몬스터를 처치했을 때 플레이어의 경험치가 일정이상 넘어가면 레벨업을 한다
             //데이터: 플레이어 경험치, 플레이어의 레벨, 몬스터가 주는 경험치
             //알고리즘: 몬스터를 처치하면 플레이어는 경험치는 얻는다. 몬스터를 죽이면 몬스터의 경험치를 가져와서 플레이어는 경험치가 지정된 수치를 넘으면 레벨업을 한다
 
-            Player Player = new Player("Player", 20, 10,20, 1);
-            Player monster = new Player("Monster", 20, 10, 20 ,1);
+            Player Player = new Player("Player", 20, 10, 20, 1);
+            Player monster = new Player("Monster", 20, 10, 20, 1);
 
             while (!Player.Death() && !monster.Death())
             {
@@ -24,23 +169,25 @@
                 else
                     Console.WriteLine("Player Death!");
 
+
                 if (monster.Death() == false)
                 {
                     Console.WriteLine("=========Monster Trun===========");
                     monster.Attack(Player);
-                    Player.Display();
                     monster.Display();
+                    Player.Display();
+
+
 
                 }
                 else
+                {
                     Console.WriteLine("Monster Death!");
-                Player.StillExp(monster);
-                Player.LevelUp(Player);
-                
-                Player.Display();
-                
+                    Player.StillExp(monster);
+                    Player.LevelUp(Player);
+                    break;
 
-
+                }
 
                 Console.WriteLine("==============================");
             }
@@ -53,6 +200,7 @@
         int nHP;
         int nExp;
         int nLevel;
+        
 
         public Player(string name, int hp = 100, int atk = 10, int Exp = 10, int Level = 1)
         {
@@ -61,6 +209,7 @@
             nHP = hp;
             nExp = Exp;
             nLevel = Level;
+
         }
 
         public void Attack(Player target)
@@ -68,6 +217,7 @@
             target.nHP = target.nHP - this.nAtk;
             //target.nHP -= this.nAtk; 위와 같은 의미
         }
+
 
         public bool Death()
         {
@@ -77,26 +227,41 @@
                 return false;
         }
 
+        //몬스터가 죽으면, 죽은몬스터로 부터 경험치를 가져온다.
+        //데이터: 플레이어의 경험치, 몬스터의 경험치
+        //알고리즘: 몬스터가 사망하면 플레어가 몬스터의 경험치를 가져온다.
+        //렙업한다. 만약 경험치가 최대 경험치가되면 
+        //데이터: 경험치,렙업,최대 경험치
+        //알고리즘: 만약 경험치가 최대경험치보다 크다면, 레벨이 1 오른다.
+
         public void Display(string msg = "")
         {
             Console.WriteLine(msg);
-            Console.WriteLine(Name + " Atk/HP:" + this.nAtk + "/" + this.nHP + "Exp" + this.nExp + "LV" + this.nLevel);
+            Console.WriteLine(Name + " Atk:" + this.nAtk + "/" + "HP: " + this.nHP + "/" + "Exp" + +this.nExp + "/" + "LV" + this.nLevel);
         }
-        public void StillExp(Player Target)
+        public void StillExp(Player Target)//몬스터의 경험치 가져오기
         {
             this.nExp = this.nExp + Target.nExp;
-            Console.WriteLine("stillExp");
+            Console.WriteLine("경험치흭득");
             
         }
         public void LevelUp(Player Target)
         {
-            if(this.nExp > 30)
+            while(this.nExp >= 30)
             {
-                this.nLevel += 1;
-                this.nExp = 30;
-                
+                this.nExp -= 30;// 초과된 경험치는 남기도록
+                this.nLevel += 1;//레벨증가
+                Console.WriteLine("Player 레벨업 현재 레벨 : " + nLevel);
+                this.nAtk += 10;//플레이어 공격력 증가
+                Console.WriteLine("Player 현재 공격력 " + nAtk);
+                this.nHP += 30;//hp증가
+                Console.WriteLine("Player 현재 체력증가: " + nHP);
+               
             }
+     
         }
+        
+        
         internal class Program
         {
             static void Main(string[] args)
@@ -112,9 +277,10 @@
                 //AttackCriticalWhile();
                 //PlayerBattleMain();
                 //MonsterSelectMain();
-                ClassPlayerBattleMain();
-                //Exp();
-                
+                //ClassPlayerBattleMain();
+                RPGPlayer.SelectFieldBattleMain();
+
+
 
 
 
