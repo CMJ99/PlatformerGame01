@@ -33,6 +33,7 @@
         }
         public static void MonsterSelectMain()
         {
+            
             Console.WriteLine("이동 할 장소를 입력하세요.(평원,무덤,던전,계곡)");
 
             string strInput = Console.ReadLine();
@@ -41,37 +42,43 @@
             int nMonsterHP = 100;
             string strMonster = "none";
 
-
-            switch (strInput)
+            while (true)
             {
-                case "평원":
-                    Console.WriteLine("슬라임이 출연합니다.");
-                    strMonster = "슬라임";
-                    nMonsterAtk = 5;
-                    nMonsterHP = 20;
-                    break;
-                case "무덤":
-                    Console.WriteLine("스켈레톤 출연합니다.");
-                    strMonster = "스켈레톤";
-                    nMonsterAtk = 10;
-                    nMonsterHP = 30;
-                    break;
-                case "던전":
-                    Console.WriteLine("좀비 출연 합니다.");
-                    strMonster = "좀비";
-                    nMonsterAtk = 20;
-                    nMonsterHP = 50;
-                    break;
-                case "계곡":
-                    strMonster = "드래곤";
-                    Console.WriteLine("드래곤이 출연 합니다.");
-                    nMonsterAtk = 50;
-                    nMonsterHP = 200;
-                    break;
-                default:
-                    Console.WriteLine("장소를 잘못입력했습니다.");
-                    break;
+
+                
+                switch (strInput)
+                {
+
+                    case "평원":
+                        Console.WriteLine("슬라임이 출연합니다.");
+                        strMonster = "슬라임";
+                        nMonsterAtk = 5;
+                        nMonsterHP = 20;
+                        break;
+                    case "무덤":
+                        Console.WriteLine("스켈레톤 출연합니다.");
+                        strMonster = "스켈레톤";
+                        nMonsterAtk = 10;
+                        nMonsterHP = 30;
+                        break;
+                    case "던전":
+                        Console.WriteLine("좀비 출연 합니다.");
+                        strMonster = "좀비";
+                        nMonsterAtk = 20;
+                        nMonsterHP = 50;
+                        break;
+                    case "계곡":
+                        strMonster = "드래곤";
+                        Console.WriteLine("드래곤이 출연 합니다.");
+                        nMonsterAtk = 50;
+                        nMonsterHP = 200;
+                        break;
+                    default:
+                        Console.WriteLine("장소를 잘못입력했습니다.");
+                        break;
+                }
             }
+
             Player player = new Player("Player", 20, 10, 10, 1);
             Player monster = new Player(strMonster, nMonsterAtk, nMonsterHP);
 
@@ -80,8 +87,8 @@
 
         public static void SelectFieldBattleMain()
         {
+            
             List<Player> listMoster = new List<Player>();
-
             listMoster.Add(new Player("slime", 5, 20, 30));
             listMoster.Add(new Player("skeleton", 10, 30, 30));
             listMoster.Add(new Player("zombie", 20, 50, 30));
@@ -95,6 +102,7 @@
 
                 string strInput = Console.ReadLine();
 
+                
                 switch (strInput)
                 {
                     case "평원":
@@ -117,7 +125,7 @@
                         break;
                 }
 
-
+                
                 Player monster = listMoster[nSeletIdx];
 
                 BattleMain(player, monster);
@@ -129,22 +137,26 @@
                     break;
                 }
 
-                if (monster.Death())
-                {
-                    Console.WriteLine("몬스터 처치");
-                    player.StillExp(monster); //경험치 흭득
-                    player.LevelUp(player); //레벨업 확인
+               
+                    if (monster.Death())
+                    {
+                        Console.WriteLine("몬스터 처치");
+                        player.StillExp(monster); //경험치 흭득
+                        player.LevelUp(player); //레벨업 확인
+                    
 
+                    }
 
-                }
+                
+                    if (listMoster[3].Death())
+                    {
+                        Console.WriteLine("몬스터 처치");
 
-                if (listMoster[3].Death())
-                {
-                    Console.WriteLine("몬스터 처치");
+                        Console.WriteLine("The End!");
+                        break;
 
-                    Console.WriteLine("The End!");
-
-                }
+                    }
+                
             }
         }
 
